@@ -13,8 +13,26 @@ let filesystem = require('fs');
 //     }
 // }
 
-filesystem.mkdir("Desktop/test/.txt", dirCreated);
+let currentPath = "C:/Dev/Youtube/test/";
 
-function dirCreated(){
+// filesystem.mkdir(currentPath + ".txt", dirCreated);
+filesystem.readdir(currentPath, dirRead);
+
+function dirRead(err, files) {
+    console.log("Verzeichnis ausgelesen:" + currentPath);
+    console.log(files);
+}
+
+function dirCreated() {
     console.log("Ordner wurde erstellt!");
+
+    filesystem.rename(
+      currentPath + "Rechnung1.txt",
+      currentPath + ".txt/Rechnung1.txt",
+      copySuccess
+    );
+}
+
+function copySuccess() {
+    console.log("Die Datei wurde erfolgreich verschoben.")
 }
