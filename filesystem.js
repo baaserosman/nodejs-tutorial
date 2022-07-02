@@ -1,4 +1,5 @@
-let filesystem = require('fs');
+let fs = require('fs');
+let path = require('path');
 
 
 // fs.mkdir("Testordner", dirCreated);
@@ -15,23 +16,38 @@ let filesystem = require('fs');
 
 let currentPath = "C:/Dev/Youtube/test/";
 
-// filesystem.mkdir(currentPath + ".txt", dirCreated);
-filesystem.readdir(currentPath, dirRead);
+// fs.mkdir(currentPath + ".txt", dirCreated);
+fs.readdir(currentPath, dirRead);
+
 
 function dirRead(err, files) {
     console.log("Verzeichnis ausgelesen:" + currentPath);
     console.log(files);
+
+    files.forEach(processFile);
 }
 
-function dirCreated() {
-    console.log("Ordner wurde erstellt!");
+//file=Rechnung1.txt;
+function processFile(file) {
+    let extension = path.extname(file);
+    console.log("Extension is " + extension);
+    
+    fs.mkdir(currentPath+extension, function(){
+        console.log("Ordner wurde erstellt.");
+        fs.rename(currentPath + file, currentPath + extension+"/" + file, copySuccess)
+    });
 
-    filesystem.rename(
-      currentPath + "Rechnung1.txt",
-      currentPath + ".txt/Rechnung1.txt",
-      copySuccess
-    );
 }
+
+// function dirCreated() {
+//     console.log("Ordner wurde erstellt!");
+
+//     // fs.rename(
+//     //   currentPath + "Rechnung1.txt",
+//     //   currentPath + ".txt/Rechnung1.txt",
+//     //   copySuccess
+//     // );
+// }
 
 function copySuccess() {
     console.log("Die Datei wurde erfolgreich verschoben.")
